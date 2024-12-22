@@ -196,13 +196,17 @@ fun DataForm(
         TitleComponent(title = "name")
         ExpenseDropDown(
             if (isIncome) listOf(
-                "Paypal",
-                "Salary",
-                "Freelance",
-                "Investments",
+                "BNI",
+                "BCA",
+                "BSI",
+                "MANDIRI",
+                "BRI",
+                "Gopay",
+                "Shopeepay",
+                "OVO",
+                "DANA",
                 "Bonus",
-                "Rental Income",
-                "Other Income"
+                "Cash"
             ) else listOf(
                 "Grocery",
                 "Netflix",
