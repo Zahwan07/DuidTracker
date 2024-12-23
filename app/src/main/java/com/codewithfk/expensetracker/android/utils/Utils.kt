@@ -12,7 +12,7 @@ import java.util.Locale
 object Utils {
 
     fun formatDateToHumanReadableForm(dateInMillis: Long): String {
-        val dateFormatter = SimpleDateFormat("dd/MM/YYYY", Locale.getDefault())
+        val dateFormatter = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
         return dateFormatter.format(dateInMillis)
     }
 
@@ -32,7 +32,7 @@ object Utils {
     }
 
     fun formatDayMonth(dateInMillis: Long): String {
-        val dateFormatter = SimpleDateFormat("dd/MMM", Locale.getDefault())
+        val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormatter.format(dateInMillis)
     }
 
@@ -62,15 +62,28 @@ object Utils {
     }
 
     fun getItemIcon(item: ExpenseEntity): Int {
-        return if (item.title == "Paypal") {
-            R.drawable.ic_paypal
-        } else if (item.title == "Netflix") {
-            R.drawable.ic_netflix
-        } else if (item.title == "Starbucks") {
-            R.drawable.ic_starbucks
+        return if (item.title == "BCA") {
+            R.drawable.bca
+        } else if (item.title == "BRI") {
+            R.drawable.bri
+        } else if (item.title == "BSI") {
+            R.drawable.bsi
+        } else if (item.title == "Cash") {
+            R.drawable.cash
+        } else if (item.title == "DANA") {
+            R.drawable.dana
+        } else if (item.title == "OVO") {
+            R.drawable.ovo
+        } else if (item.title == "Shopeepay") {
+            R.drawable.shopeepay
+        } else if (item.title == "Gopay") {
+            R.drawable.gopay
+        } else if (item.title == "Mandiri") {
+            R.drawable.mandiri
         } else {
             R.drawable.ic_upwork
         }
     }
-
 }
+
+
