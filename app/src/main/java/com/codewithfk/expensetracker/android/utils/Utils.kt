@@ -8,82 +8,100 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
 object Utils {
 
+    /**
+     * Converts a timestamp (in milliseconds) to a human-readable date string (dd/MM/yyyy).
+     */
     fun formatDateToHumanReadableForm(dateInMillis: Long): String {
-        val dateFormatter = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
-        return dateFormatter.format(dateInMillis)
+        val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return dateFormatter.format(Date(dateInMillis))
     }
 
+    /**
+     * Formats a timestamp (in milliseconds) for use in charts (dd-MMM).
+     */
     fun formatDateForChart(dateInMillis: Long): String {
         val dateFormatter = SimpleDateFormat("dd-MMM", Locale.getDefault())
-        return dateFormatter.format(dateInMillis)
+        return dateFormatter.format(Date(dateInMillis))
     }
 
+    /**
+     * Formats a currency amount based on the given locale.
+     */
     fun formatCurrency(amount: Double, locale: Locale = Locale.US): String {
         val currencyFormatter = NumberFormat.getCurrencyInstance(locale)
         return currencyFormatter.format(amount)
     }
 
+    /**
+     * Converts a timestamp (in milliseconds) to a formatted string (MMM dd, yyyy).
+     */
     fun formatDayMonthYear(dateInMillis: Long): String {
         val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-        return dateFormatter.format(dateInMillis)
+        return dateFormatter.format(Date(dateInMillis))
     }
 
+    /**
+     * Converts a timestamp (in milliseconds) to a day-month formatted string (dd/MM/yyyy).
+     */
     fun formatDayMonth(dateInMillis: Long): String {
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        return dateFormatter.format(dateInMillis)
+        return dateFormatter.format(Date(dateInMillis))
     }
 
+    /**
+     * Formats a double value to two decimal places.
+     */
     fun formatToDecimalValue(d: Double): String {
         return String.format("%.2f", d)
     }
 
+    /**
+     * Converts a date string (dd/MM/yyyy) to a formatted string (MMM dd, yyyy).
+     */
     fun formatStringDateToMonthDayYear(date: String): String {
         val millis = getMillisFromDate(date)
         return formatDayMonthYear(millis)
     }
 
+    /**
+     * Converts a date string (dd/MM/yyyy) to a timestamp (in milliseconds).
+     */
     fun getMillisFromDate(date: String): Long {
         return getMilliFromDate(date)
     }
 
+    /**
+     * Safely converts a date string (dd/MM/yyyy) to a timestamp (in milliseconds).
+     */
     fun getMilliFromDate(dateFormat: String?): Long {
-        var date = Date()
+        if (dateFormat.isNullOrBlank()) return 0L
         val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        try {
-            date = formatter.parse(dateFormat)
+        return try {
+            val date = formatter.parse(dateFormat)
+            date?.time ?: 0L
         } catch (e: ParseException) {
             e.printStackTrace()
+            0L
         }
-        println("Today is $date")
-        return date.time
     }
 
+    /**
+     * Returns the appropriate drawable resource ID based on the title of the expense item.
+     */
     fun getItemIcon(item: ExpenseEntity): Int {
-        return if (item.title == "BCA") {
-            R.drawable.bca
-        } else if (item.title == "BRI") {
-            R.drawable.bri
-        } else if (item.title == "BSI") {
-            R.drawable.bsi
-        } else if (item.title == "Cash") {
-            R.drawable.cash
-        } else if (item.title == "DANA") {
-            R.drawable.dana
-        } else if (item.title == "OVO") {
-            R.drawable.ovo
-        } else if (item.title == "Shopeepay") {
-            R.drawable.shopeepay
-        } else if (item.title == "Gopay") {
-            R.drawable.gopay
-        } else if (item.title == "Mandiri") {
-            R.drawable.mandiri
-        } else {
-            R.drawable.ic_upwork
+        return when (item.title) {
+            "BCA" -> R.drawable.bca
+            "BRI" -> R.drawable.bri
+            "BSI" -> R.drawable.bsi
+            "Cash" -> R.drawable.cash
+            "DANA" -> R.drawable.dana
+            "OVO" -> R.drawable.ovo
+            "Shopeepay" -> R.drawable.shopeepay
+            "Gopay" -> R.drawable.gopay
+            "Mandiri" -> R.drawable.mandiri
+            else -> R.drawable.ic_upwork
         }
     }
 }
-
-

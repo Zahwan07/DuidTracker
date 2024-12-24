@@ -3,12 +3,7 @@ package com.codewithfk.expensetracker.android.feature.stats
 import android.view.LayoutInflater
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -27,8 +22,8 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.codewithfk.expensetracker.android.R
-import com.codewithfk.expensetracker.android.utils.Utils
 import com.codewithfk.expensetracker.android.feature.home.TransactionList
+import com.codewithfk.expensetracker.android.utils.Utils
 import com.codewithfk.expensetracker.android.widget.ExpenseTextView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -47,11 +42,9 @@ fun StatsScreen(navController: NavController, viewModel: StatsViewModel = hiltVi
             Image(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = null,
-                modifier = Modifier.align(
-                    Alignment.CenterStart
-                ).clickable {
-                    navController.navigateUp()
-                },
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .clickable { navController.navigateUp() },
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outline)
             )
             ExpenseTextView(
@@ -66,17 +59,36 @@ fun StatsScreen(navController: NavController, viewModel: StatsViewModel = hiltVi
                 painter = painterResource(id = R.drawable.dots_menu),
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.CenterEnd),
-                colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(Color.Black)
+                colorFilter = ColorFilter.tint(Color.Black)
             )
         }
     }) {
-        val dataState = viewModel.entries.collectAsState(emptyList())
-        val topExpense = viewModel.topEntries.collectAsState(initial = emptyList())
+        val expenseDataState = viewModel.entries.collectAsState(emptyList())
+        val topExpenseState = viewModel.topEntries.collectAsState(emptyList())
+
         Column(modifier = Modifier.padding(it)) {
-            val entries = viewModel.getEntriesForChart(dataState.value)
-            LineChart(entries = entries)
+            val chartEntries = viewModel.getEntriesForChart(expenseDataState.value)
+
+            if (chartEntries.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ExpenseTextView(text = "No data available", fontSize = 16.sp)
+                }
+            } else {
+                LineChart(entries = chartEntries)
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
-            TransactionList(Modifier, list = topExpense.value, "Top Spending", onSeeAllClicked = {})
+            TransactionList(
+                Modifier,
+                list = topExpenseState.value,
+                title = "Top Spending",
+                onSeeAllClicked = {}
+            )
         }
     }
 }
@@ -107,7 +119,6 @@ fun LineChart(entries: List<Entry>) {
             drawable?.let {
                 fillDrawable = it
             }
-
         }
 
         lineChart.xAxis.valueFormatter =
@@ -118,12 +129,22 @@ fun LineChart(entries: List<Entry>) {
             }
         lineChart.data = com.github.mikephil.charting.data.LineData(dataSet)
         lineChart.axisLeft.isEnabled = false
-        lineChart.axisRight.isEnabled = false
-        lineChart.axisRight.setDrawGridLines(false)
-        lineChart.axisLeft.setDrawGridLines(false)
-        lineChart.xAxis.setDrawGridLines(false)
+        lineChart.axisRight.isEnabled = true
+        lineChart.axisRight.setDrawGridLines(true)
+        lineChart.axisRight.textColor = android.graphics.Color.GRAY
+        lineChart.axisRight.textSize = 10f
+        lineChart.xAxis.setDrawGridLines(true)
+        lineChart.xAxis.gridColor = android.graphics.Color.LTGRAY
         lineChart.xAxis.setDrawAxisLine(false)
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        lineChart.setTouchEnabled(true)
+        lineChart.isDragEnabled = true
+        lineChart.setScaleEnabled(true)
+        lineChart.setPinchZoom(true)
+
+        // Mengganti properti dengan metode untuk highlight
+        lineChart.setHighlightPerTapEnabled(true)
+
         lineChart.invalidate()
     }
 }
