@@ -12,18 +12,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(val dao: ExpenseDao) : BaseViewModel() {
+    // Data yang diambil dari DAO
     val entries = dao.getAllExpenseByDate()
     val topEntries = dao.getTopExpenses()
+
     fun getEntriesForChart(entries: List<ExpenseSummary>): List<Entry> {
-        val list = mutableListOf<Entry>()
-        for (entry in entries) {
+        val sortedEntries = entries.sortedBy { Utils.getMillisFromDate(it.date) }
+        val chartEntries = mutableListOf<Entry>()
+        var cumulativeSum = 0f
+
+        for (entry in sortedEntries) {
             val formattedDate = Utils.getMillisFromDate(entry.date)
-            list.add(Entry(formattedDate.toFloat(), entry.total_amount.toFloat()))
+            // Hitung kumulasi dengan mempertimbangkan pemasukan atau pengeluaran
+            cumulativeSum += entry.total_amount.toFloat()
+            chartEntries.add(Entry(formattedDate.toFloat(), cumulativeSum))
         }
-        return list
+        return chartEntries
     }
 
     override fun onEvent(event: UiEvent) {
+        // Handle UI events jika diperlukan
     }
 }
-

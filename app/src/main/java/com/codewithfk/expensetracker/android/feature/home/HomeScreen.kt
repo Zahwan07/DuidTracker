@@ -106,13 +106,13 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                         color = Color.White
                     )
                     ExpenseTextView(
-                        text = "CodeWithFK",
+                        text = "Zahwan",
                         style = Typography.titleLarge,
                         color = Color.White
                     )
                 }
                 Image(
-                    painter = painterResource(id = R.drawable.ic_notification),
+                    painter = painterResource(id = R.drawable.dt),
                     contentDescription = null,
                     modifier = Modifier.align(Alignment.CenterEnd)
                 )
