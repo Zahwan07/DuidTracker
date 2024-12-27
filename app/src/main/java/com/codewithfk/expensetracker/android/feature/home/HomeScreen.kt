@@ -205,7 +205,7 @@ fun MultiFloatingActionButton(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_expense),
-                            contentDescription = "Add Expense",
+                            contentDescription = "Money Spent",
                             tint = Color.White
                         )
                     }

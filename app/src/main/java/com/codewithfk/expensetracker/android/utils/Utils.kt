@@ -29,7 +29,7 @@ object Utils {
     /**
      * Formats a currency amount based on the given locale.
      */
-    fun formatCurrency(amount: Double, locale: Locale = Locale.US): String {
+    fun formatCurrency(amount: Double, locale: Locale = Locale("in", "ID")): String {
         val currencyFormatter = NumberFormat.getCurrencyInstance(locale)
         return currencyFormatter.format(amount)
     }
