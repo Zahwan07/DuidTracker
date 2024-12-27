@@ -238,14 +238,14 @@ fun DataForm(
                 amount.value = newValue.filter { it.isDigit() || it == '.' }
             }, textStyle = TextStyle(color = Color.Black),
             visualTransformation = { text ->
-                val out = "$" + text.text
+                val out = "Rp" + text.text
                 val currencyOffsetTranslator = object : OffsetMapping {
                     override fun originalToTransformed(offset: Int): Int {
-                        return offset + 1
+                        return offset + 2
                     }
 
                     override fun transformedToOriginal(offset: Int): Int {
-                        return if (offset > 0) offset - 1 else 0
+                        return if (offset > 1) offset - 2 else 0
                     }
                 }
 
