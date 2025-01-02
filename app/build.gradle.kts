@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.codewithfk.expensetracker.android"
+    namespace = "com.duidtracker.android.android"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.codewithfk.expensetracker.android"
+        applicationId = "com.duidtracker.android.android"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
